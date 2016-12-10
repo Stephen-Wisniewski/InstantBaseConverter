@@ -68,17 +68,15 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <EditText
+    <TextView
+        android:text="@string/answer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="text"
-        android:ems="10"
-        android:layout_above="@+id/button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="23dp"
-        android:hint="@string/answer"
+        android:layout_marginBottom="30dp"
         android:textAlignment="center"
-        android:id="@+id/editText2" />
+        android:id="@+id/textView5"
+        android:layout_above="@+id/button"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
