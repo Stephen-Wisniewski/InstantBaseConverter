@@ -11,6 +11,6 @@
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="answer">Answer</string>
-    <string name="number_text">Number</string>s
-    <string name="convert_text">Convert</string>
+    <string name="input">Number</string>s
+    <string name="button_text">Convert</string>
 </resources>
