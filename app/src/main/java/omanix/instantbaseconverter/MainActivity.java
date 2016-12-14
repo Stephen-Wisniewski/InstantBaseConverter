@@ -15,7 +15,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void convert(View view) {
-
         Spinner spinner2 = (Spinner) findViewById(R.id.spinner);
         Spinner spinner = (Spinner) findViewById(R.id.spinner2);
 
@@ -25,88 +24,70 @@ public class MainActivity extends AppCompatActivity {
         String spinnerinput =  spinner.getItemAtPosition(spinner.getSelectedItemPosition()).toString();
         String spinnerinput2 = spinner2.getItemAtPosition(spinner2.getSelectedItemPosition()).toString();
 
-        if(spinnerinput.equals(spinnerinput2)) {
-            output.setText(input.getText());
-        }
+        if (checkOK (spinnerinput, input.getText().toString())) {
 
-        else if(spinnerinput.equals("Base 2") && spinnerinput2.equals("Base 10")) {
-            String regex = "[0-1]+";
+            String intermediateValue = toBase10(spinnerinput, input.getText().toString());
+            int intValue = Integer.parseInt(intermediateValue);
 
-            if (input.getText().toString().matches(regex)) {
-                output.setText(binaryToDecimal(input.getText().toString()));
-            } else {
-                Context context = getApplicationContext();
-                showToast(context, "Invalid characters for a base 2 number!");
+            switch (spinnerinput2) {
 
+                case "Base 10": output.setText(toBase10(spinnerinput2, intermediateValue)); break;
+                case "Base 2": output.setText(Integer.toBinaryString(intValue)); break;
+                case "Base 8": output.setText(Integer.toOctalString(intValue)); break;
+                case "Base 16": output.setText(Integer.toHexString(intValue).toUpperCase()); break;
             }
+        } else {
+            Context context = getApplicationContext();
+            showToast(context, "Invalid input!");
         }
 
-        else if(spinnerinput.equals("Base 10") && spinnerinput2.equals("Base 2")) {
-            String regex = "[0-9]+";
+    } // end convert()
 
-            if(input.getText().toString().matches(regex)) {
-                output.setText(decimalToBinary(input.getText().toString()));
-            } else {
+    // 'base' is the base being used;
+// 'digits' is the number written in that base.
+    private boolean checkOK(String base, String digits) {
+
+        String regex;
+
+        switch (base) {
+
+            case "Base 2": regex = "[0-1]+"; break;
+            case "Base 8": regex = "[0-7]+"; break;
+            case "Base 10": regex = "[0-9]+"; break;
+            case "Base 16": regex = "[0-9A-Fa-f]+"; break;
+
+            default: return false;
+        } // end switch
+
+        return digits.matches(regex);
+
+    } // end checkOK()
+
+    // 'base' is the base being used;
+// 'digits' is the number written in that base.
+    private String toBase10(String base, String digits) {
+
+        int base10;
+
+        switch (base) {
+
+            case "Base 2": base10 = Integer.parseInt(digits, 2); break;
+            case "Base 8": base10 = Integer.parseInt(digits, 8); break;
+            case "Base 10": base10 = Integer.parseInt(digits, 10); break;
+            case "Base 16": base10 = Integer.parseInt(digits, 16); break;
+
+            default:
                 Context context = getApplicationContext();
-                showToast(context, "Invalid characters for a base 10 number!");
-            }
-        }
+                showToast(context, "Invalid base input to toBase10.");
+                return "-1";
 
-        else if(spinnerinput.equals("Base 10") && spinnerinput2.equals("Base 16")) {
-            String regex = "[0-9]+";
+        } // end switch
 
-            if(input.getText().toString().matches(regex)) {
-                output.setText(decimalToHex(input.getText().toString()));
-            } else {
-                Context context = getApplicationContext();
-                showToast(context, "Invalid characters for a base 10 number!");
-            }
-        }
+        return Integer.toString(base10);
 
-        else if(spinnerinput.equals("Base 10") && spinnerinput2.equals("Base 8")) {
-            String regex = "[0-9]+";
+    } // end toBase10()
 
-            if(input.getText().toString().matches(regex)) {
-                output.setText(decimalToOctal(input.getText().toString()));
-            } else {
-                Context context = getApplicationContext();
-                showToast(context, "Invalid characters for a base 10 number!");
-            }
-        }
-
-
-    }
-
-    public static String binaryToDecimal(String input) {
-        int decimalValue = Integer.parseInt(input, 2);
-        return Integer.toString(decimalValue);
-    }
-
-    public static String binaryToHex(String input) {
-        return "x";
-
-    }
-
-    public static String decimalToBinary(String input) {
-        int decimalValue = Integer.parseInt(input);
-        return Integer.toBinaryString(decimalValue);
-    }
-
-    public static String decimalToHex(String input) {
-        int decimalValue = Integer.parseInt(input);
-        return Integer.toHexString(decimalValue).toUpperCase();
-    }
-
-    public static String decimalToOctal(String input) {
-        int decimalValue = Integer.parseInt(input);
-        return Integer.toOctalString(decimalValue);
-    }
-
-
-
-    public static void showToast(Context context, String text) {
+    public static void showToast(Context context, String text) { // Displays message to the user
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
-
-
 }
