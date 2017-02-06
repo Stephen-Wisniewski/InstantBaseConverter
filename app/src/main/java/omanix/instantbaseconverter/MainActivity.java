@@ -5,37 +5,71 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
+import com.google.android.gms.ads.InterstitialAd;
 
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
+
+        EditText output = (EditText) findViewById(R.id.output);
+
+        output.setFocusable(false);
+
+        AdView adView = (AdView) findViewById(R.id.adView);
+
+        AdRequest adRequest = new AdRequest.Builder() .setRequestAgent("android_studio:ad_template").build();
+
+        adView.loadAd(adRequest);
+
+    } // end onCreate()
 
     public void convert(View view) {
-        Spinner spinner2 = (Spinner) findViewById(R.id.spinner);
-        Spinner spinner = (Spinner) findViewById(R.id.spinner2);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
 
         EditText input = (EditText) findViewById(R.id.input);
-        EditText output = (EditText) findViewById(R.id.editText);
+        EditText output = (EditText) findViewById(R.id.output);
+
 
         String spinnerinput =  spinner.getItemAtPosition(spinner.getSelectedItemPosition()).toString();
         String spinnerinput2 = spinner2.getItemAtPosition(spinner2.getSelectedItemPosition()).toString();
 
         if (checkOK (spinnerinput, input.getText().toString())) {
 
-            String intermediateValue = toBase10(spinnerinput, input.getText().toString());
-            int intValue = Integer.parseInt(intermediateValue);
+            String tempIntermediateValue = toBase10(spinnerinput, input.getText().toString());
+            long intermediateValue = Long.parseLong(tempIntermediateValue);
 
-            switch (spinnerinput2) {
+            if(intermediateValue > Integer.MAX_VALUE) {
+                Context context = getApplicationContext();
+                showToast(context, "Number too large!");
+            } else {
 
-                case "Base 10": output.setText(toBase10(spinnerinput2, intermediateValue)); break;
-                case "Base 2": output.setText(Integer.toBinaryString(intValue)); break;
-                case "Base 8": output.setText(Integer.toOctalString(intValue)); break;
-                case "Base 16": output.setText(Integer.toHexString(intValue).toUpperCase()); break;
+
+                switch (spinnerinput2) {
+
+                    case "Base 10":
+                        output.setText(toBase10(spinnerinput2, tempIntermediateValue));
+                        break;
+                    case "Base 2":
+                        output.setText(Long.toBinaryString(intermediateValue));
+                        break;
+                    case "Base 8":
+                        output.setText(Long.toOctalString(intermediateValue));
+                        break;
+                    case "Base 16":
+                        output.setText(Long.toHexString(intermediateValue).toUpperCase());
+                        break;
+                }
             }
+
+            // Show message to the user
         } else {
             Context context = getApplicationContext();
             showToast(context, "Invalid input!");
@@ -67,27 +101,26 @@ public class MainActivity extends AppCompatActivity {
 // 'digits' is the number written in that base.
     private String toBase10(String base, String digits) {
 
-        int base10;
+        long base10;
 
         switch (base) {
 
-            case "Base 2": base10 = Integer.parseInt(digits, 2); break;
-            case "Base 8": base10 = Integer.parseInt(digits, 8); break;
-            case "Base 10": base10 = Integer.parseInt(digits, 10); break;
-            case "Base 16": base10 = Integer.parseInt(digits, 16); break;
+            case "Base 2": base10 = Long.parseLong(digits, 2); break;
+            case "Base 8": base10 = Long.parseLong(digits, 8); break;
+            case "Base 10": base10 = Long.parseLong(digits, 10); break;
+            case "Base 16": base10 = Long.parseLong(digits, 16); break;
 
             default:
-                Context context = getApplicationContext();
-                showToast(context, "Invalid base input to toBase10.");
                 return "-1";
 
         } // end switch
 
-        return Integer.toString(base10);
+        return Long.toString(base10);
 
     } // end toBase10()
 
-    public static void showToast(Context context, String text) { // Displays message to the user
+    // Displays message to the user
+    public static void showToast(Context context, String text) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
-}
+} // end class
