@@ -3,8 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     android:orientation="vertical">
 
     <EditText
@@ -53,6 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:cursorVisible="false"
         android:entries="@array/spinner_entries2"
         android:layout_marginBottom="20dp"/>
 
@@ -84,9 +83,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:layout_marginTop="25dp"
         ads:adSize="BANNER"
         ads:adUnitId="@string/admob_id"
-        android:layout_marginTop="50dp"
         />
 
 </LinearLayout>

@@ -7,10 +7,14 @@ import android.view.View;
 import android.widget.*;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-
 import com.google.android.gms.ads.InterstitialAd;
 
+//import com.google.android.gms.ads.InterstitialAd; // Will possibly be used later
+
 public class MainActivity extends AppCompatActivity {
+
+    InterstitialAd mInterstitialAd;
+
 
 
     @Override
@@ -23,9 +27,11 @@ public class MainActivity extends AppCompatActivity {
         output.setFocusable(false);
 
         AdView adView = (AdView) findViewById(R.id.adView);
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
 
         AdRequest adRequest = new AdRequest.Builder() .setRequestAgent("android_studio:ad_template").build();
-
+        
         adView.loadAd(adRequest);
 
     } // end onCreate()
